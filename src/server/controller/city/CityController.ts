@@ -1,29 +1,44 @@
-import { Request, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import * as yup from 'yup';
+import { validation } from '../../shared/middleware/Validation';
 
 interface ICity{
     'cityName': string;
-    'state': string;
 }
 
-const bodyValidation: yup.ObjectSchema<ICity> = yup.object().shape({
-    cityName: yup.string().required().min(3),
-    state: yup.string().required().min(3),
-});
+interface IQueryProps{
+    page?: number;
+    limit?: number;
+    filter?: string;
+}
+
+export const createValidation = validation((getSchema) => ({
+    body: getSchema<ICity>(yup.object().shape({
+        cityName: yup.string().required().min(3),
+    })),
+}));
+
+export const findAllValidation = validation((getSchema) => ({
+    query: getSchema<IQueryProps>(yup.object().shape({
+        page: yup.number().optional().moreThan(0),
+        limit: yup.number().optional().moreThan(0),
+        filter: yup.string().optional(),
+    })),
+}));
+
+
 
 export const create = async (request: Request<{}, {}, ICity>, response: Response) => {
-    let validatedData: ICity | undefined= undefined;
-    try {
-        validatedData = await bodyValidation.validate(request.body);
-        console.log(validatedData);
-    } catch (error) {
-        const yupError = error as yup.ValidationError;
+    
+    console.log(request.body);
 
-        return response.json({
-            errors: {
-                default: yupError.message,
-            }
-        });
-    }
+    return response.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Não implementado!');
+};
+
+export const findAll = async(req: Request<{}, {}, {}, IQueryProps>, res: Response) => {
+    console.log(req.query);
+
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Não implementado.');
 };
 

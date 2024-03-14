@@ -1,6 +1,6 @@
-import * as create from './CityController';
+import * as api from './CityController';
 
 
 export const CityController = {
-    ...create, 
+    ...api,
 };
