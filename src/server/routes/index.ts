@@ -14,4 +14,10 @@ router.post('/city', CityController.createValidation, CityController.create);
 
 router.get('/city', CityController.findAllValidation, CityController.findAll);
 
+router.get('/city/:id', CityController.findByIdValidation, CityController.findById);
+
+router.put('/city/:id', CityController.updateByIdValidation, CityController.updateById);
+
+router.delete('/city/:id', CityController.deleteValidation, CityController.deleteById);
+
 export { router };
